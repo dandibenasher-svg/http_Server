@@ -14,6 +14,11 @@ def get_url(answer):
     return url
 
 def open_files(file_name):
+    """
+    opens file
+    param file_name: the name of the file we want to open
+    ans with the new file
+    """
     with open(file_name, 'rb') as f:
         file_data = f.read()
 
@@ -24,7 +29,7 @@ server_soc = socket.socket()
 server_soc.bind(("0.0.0.0", 80)) #8080 if it doesnt work
 server_soc.listen(3)
 
-banlist = ["/E:/other%20cyber%20work/banned%20file.jpg"]
+banlist = ["banned%20file.jpg"]
 moved_dict = {"move1.jpg":"/move2.jpg"}
 while True:
     client_sock, addr = server_soc.accept()
@@ -50,7 +55,7 @@ while True:
             answer = f"HTTP/1.1 301 Moved Permanently\r\nLocation: " + moved_dict[url] + "\r\nContent-Length: 0\r\n\r\n"
             answer=answer.encode()
         elif url.split(".")[-1] == "server":
-            pass
+            answer = "HTTP/1.1 500 Internal Server Error\r\nContent-Length: 0\r\n\r\n".encode()
         elif os.path.exists(url):
             answer = open_files(url)
         else:
