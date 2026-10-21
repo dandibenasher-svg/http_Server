@@ -10,7 +10,7 @@ def get_url(answer):
     lines1 = answer.split('\r\n')[0]
     params = lines1.split(' ')
     if len(params) == 3 and params[0] == 'GET' and params[2] == 'HTTP/1.1':
-        url = params[1]
+        url = params[1][1:]
     return url
 
 def open_files(file_name):
@@ -25,7 +25,7 @@ server_soc.bind(("0.0.0.0", 80)) #8080 if it doesnt work
 server_soc.listen(3)
 
 banlist = ["/E:/other%20cyber%20work/banned%20file.jpg"]
-moved_dict = {"/move1.jpg":"/move2.jpg"}
+moved_dict = {"move1.jpg":"/move2.jpg"}
 while True:
     client_sock, addr = server_soc.accept()
     print(f"{addr[0]} - connected")
@@ -40,10 +40,10 @@ while True:
 
     print(data)
     url = get_url(data)
-    if url:
+    if url is not None:
         print("=============================================" + url +"========" + "/E:/other cyber work/move1.jpg")
-        if url == '/':
-            answer = open_files("index.html.html")
+        if url == '':
+            answer = open_files("index.html")
         elif url in banlist:
             answer = f"HTTP/1.1 403 forbidden file\r\nContent-Length: 0\r\n\r\n".encode()
         elif url in moved_dict:
